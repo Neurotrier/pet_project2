@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тут фильмы</title>
+</head>
+<body>
+{%if request.user.is_authenticated%}
+<p>{{user.username}}</p>
+{%else%}
+<p><a href="{%url 'login'%}">Зарегайся</a></p>
+{%endif%}
+<h1>Список жанров</h1>
+			{%for c in categories%}
+		{% if c.pk == cat_selected%}
+		<li class="selected">{{c.name}}</li>
+		{%else%}
+		<li><a href="{{c.get_absolute_url}}">{{c.name}}</a></li>
+		{%endif%}
+		{%endfor%}
+
+<h1>Фильмы</h1>
+<ul>
+{%for i in films%}
+<li><a href="{% url 'film' i.pk %}">{{i}}</a></li>
+    {%endfor%}
+    </ul>
+
+<h1>Найти тот самый фильм</h1>
+<form action="{%url 'search'%}" method="get">
+	<input type="search" placeholder="Введите название фильма" name="q">
+	<button type="submit">Искать!</button>
+</form>
+
+	<h1>Фильтровать по годам!</h1>
+<form action="{%url 'filmyear'%}" method="get">
+
+<ul>
+	{%for i in years%}
+	<li>
+		<input type="checkbox" name="year" value="{{i}}">
+		<span>{{i}}</span>
+	</li>
+	{%endfor%}
+</ul>
+	<button type="submit">Найти!</button>
+</form>
+
+</body>
+</html>

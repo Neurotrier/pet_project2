@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{person.name}}</title>
+</head>
+<body>
+<p><img src="{{person.photo.url}}" alt=""></p>
+<p>{{person.name}}</p>
+<p>Возраст: {{person.age}}</p>
+<p>{{person.description}}</p>
+{%if person.film_directors.all%}
+<h1>Режисер в:</h1>
+{% for i in person.film_directors.all%}
+<p><a href="{{i.get_absolute_url}}">{{i}}</a></p>
+{%endfor%}
+{%endif%}
+
+{%if person.film_actors.all%}
+<h1>Актер в:</h1>
+{% for i in person.film_actors.all%}
+<p><a href="{{i.get_absolute_url}}">{{i}}</a></p>
+{%endfor%}
+{%endif%}
+
+</body>
+</html>

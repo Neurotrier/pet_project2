@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+</head>
+<body>
+
+<ul>
+    {%for i in reviews%}
+    <li>
+        <p>{{i.date}}</p>
+        <p>Отзыв на фильм <a href="{%url 'film' i.film_id%}">{{i.film}}</a></p>
+        <p>{{i.review}}</p>
+    </li>
+    {%endfor%}
+</ul>
+
+</body>
+</html>

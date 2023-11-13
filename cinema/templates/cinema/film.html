@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{film.title}}</title>
+</head>
+<body>
+<h1>{{film.title}}</h1>
+<h2>{{film.slogan}}</h2>
+{%if film.poster%}
+<p><img class="img-article-left" src="{{film.poster.url}}" alt=""></p>
+{%endif%}
+<p>{{film.description}}</p>
+<ul>
+    {%if film.filmpics_set.all%}
+    <h1>Кадры из фильма</h1>
+    {%for i in film.filmpics_set.all%}
+    <li><p><img class="img-article-left" src="{{i.image.url}}" alt=""></p></li>
+    {%endfor%}
+    {%endif%}
+    <p>Режисеры</p>
+    {% for i in film.directors.all%}
+    <span><a href="{{i.get_absolute_url}}">{{i}}</a></span>
+    {%endfor%}
+
+    <p>Актеры</p>
+    {% for i in film.actors.all%}
+    <span><a href="{{i.get_absolute_url}}">{{i}}</a></span>
+    {%endfor%}
+</ul>
+<h1>Оценить фильм</h1>
+<form action="{%url 'add_rating'%}" method="post">
+    {%csrf_token%}
+    <input type="hidden" value="{{film.id}}" name="film">
+    {%for i in range%}
+    <input id="{{i}}" type="radio" value="{{i}}" name="stars">
+    <label for="{{i}}">{{i}}</label>
+    {%endfor%}
+    {%if c == None%}
+    <span>Оценок пока нет. Станьте первыми!</span>
+    {%else%}
+    <span>Общая оценка {{c}}</span>
+    {%endif%}
+    <button type="submit">Отправить оценку</button>
+</form>
+
+<h1>А теперь отзывы!!!</h1>
+{%if request.user.is_authenticated%}
+ <form action="{% url 'add_review' film.id %}" method="post" class="mt-4"
+                          id="formReview">
+                        {% csrf_token %}
+                        <div class="form-group editContent">
+                            <label class="editContent">
+                                Ваш комментарий *
+                            </label>
+                            <input type="text" name="review" id="contactcomment" required="">
+                        </div>
+                        <button type="submit">
+                            Отправить
+                        </button>
+ </form>
+{%else%}
+<h1>Вы не зареганы!</h1>
+{%endif%}
+
+    {%for i in film.reviews_set.all%}
+    <p>{{i.name}} | {{i.date}}</p>
+    <p>{{i.review}}</p>
+    {%endfor%}
+</body>
+</html>
